@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>ScriptCopError</Name>
+      <ViewSelectedBy>
+        <TypeName>ScriptCopError</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Rule</PropertyName>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <Wrap />
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Problem</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ItemWithProblem</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>ScriptCop.Test.Output</Name>
+      <ViewSelectedBy>
+        <TypeName>ScriptCop.Test.Output</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <Frame>
+                <CustomItem>
+                  <ExpressionBinding>
+                    <ScriptBlock>
+    $writeColor = if ($_.Passed) {
+        "DarkGreen"
+    } else {
+        "Red"
+    }
+    $testStatus = if ($_.Passed) {
+        "--- Passed ---"
+    } else {
+        "*** Failed ***"
+    }
+    Write-Host "
+$($_.TestPass)
+|&gt;$($_.TestCase)                         
+                                       $testStatus
+" -ForegroundColor $writeColor 
+
+    if ($_.Errors) {
+Write-Host "
+$($_.Errors |Out-String)
+" -ForegroundColor $writeColor         
+    }
+</ScriptBlock>
+                  </ExpressionBinding>
+                </CustomItem>
+              </Frame>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
