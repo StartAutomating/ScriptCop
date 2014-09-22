@@ -32,6 +32,69 @@
       </TableControl>
     </View>
     <View>
+      <Name>ScriptCop.Test.Pass.Output</Name>
+      <ViewSelectedBy>
+        <TypeName>ScriptCop.Test.Pass.Output</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <Frame>
+                <CustomItem>
+                  <ExpressionBinding>
+                    <ScriptBlock>
+$writeColor = if ($_.Passed) {
+    "DarkGreen"
+} else {
+    "Red"
+}
+$testStatus = if ($_.Passed) {
+    "--- Passed --- "
+} else {
+    "*** Failed *** "
+}
+
+if (-not ($request -and $response)) {
+    
+
+$msg = " $($_.TestPass)"
+
+$testStatus = $testStatus.PadLeft($host.ui.RawUI.BufferSize.Width - $msg.Length)
+Write-Host " " 
+Write-Host "${Msg}$testStatus" -ForegroundColor $writeColor -NoNewline
+Write-Host " " 
+$null= ($_.Results | Out-String)
+
+
+''
+} else {
+"&lt;div style='background-color:$writeColor;color:#ffffff'&gt;
+    &lt;div style='float:left;width:20%;font-size:1.22em'&gt;
+        &lt;h3&gt;
+          $($_.TestPass)  
+        &lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div style='float:right;width:20%;text-align:right;'&gt;
+        &lt;span style='color:#ffffff;font-size:1.22em'&gt;$testStatus&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;br style='clear:both'/&gt;
+    &lt;div style='width:80%;margin-left:20%'&gt;
+        $($_.Results | Out-html)
+    &lt;/div&gt;
+&lt;/div&gt;
+"    
+}
+</ScriptBlock>
+                  </ExpressionBinding>
+                </CustomItem>
+              </Frame>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
       <Name>ScriptCop.Test.Output</Name>
       <ViewSelectedBy>
         <TypeName>ScriptCop.Test.Output</TypeName>
@@ -50,20 +113,176 @@
         "Red"
     }
     $testStatus = if ($_.Passed) {
-        "--- Passed ---"
+        "--- Passed --- "
     } else {
-        "*** Failed ***"
+        "*** Failed *** "
     }
-    Write-Host "
-$($_.TestPass)
-|&gt;$($_.TestCase)                         
-                                       $testStatus
-" -ForegroundColor $writeColor 
+
+if (-not ($Request -and $response)) {
+
+    $msg = "   $($_.TestCase)"
+    $testStatus = $testStatus.PadLeft($host.ui.RawUI.BufferSize.Width - $msg.Length)
+    Write-Host "${Msg}$testStatus" -ForegroundColor $writeColor -NoNewline
 
     if ($_.Errors) {
-Write-Host "
-$($_.Errors |Out-String)
-" -ForegroundColor $writeColor         
+Write-Host "$($_.Errors |Out-String)" -ForegroundColor $writeColor         
+    }
+    ''
+
+} else {
+"
+&lt;div style='float:left;width:80%;font-size:1.11em'&gt;
+    &lt;h4&gt;
+        $($_.TestCase)  
+    &lt;/h4&gt;
+    $(if ($_.Errors) {
+"&lt;pre&gt;
+$($_.Errors | Out-String)
+&lt;/pre&gt;"        
+    })
+&lt;/div&gt;
+&lt;div style='float:right;width:20%;font-size:1.11em;text-align:right'&gt;
+    &lt;span style='font-size:1.11em'&gt;$testStatus&lt;/span&gt;
+&lt;/div&gt;
+&lt;br style='clear:both' /&gt;
+"    
+}
+</ScriptBlock>
+                  </ExpressionBinding>
+                </CustomItem>
+              </Frame>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>ScriptCop.Test.Pass.Summary</Name>
+      <ViewSelectedBy>
+        <TypeName>ScriptCop.Test.Pass.Summary</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <Frame>
+                <CustomItem>
+                  <ExpressionBinding>
+                    <ScriptBlock>
+$writeColor = if ($_.PercentPassingTestCases -eq 100) {
+    "DarkGreen"   
+} elseif ($_.PercentPassingTestCases -ge 75)  {
+    "DarkYellow"
+} else {
+    "Red"
+}
+    if (-not ($request -and $response)) {
+
+$msg = "$($_.Module)"
+
+$testStatus = [Math]::round($_.PercentPassingTestCases, 2) + " % Passed (Test Cases)"
+$testStatus = $testStatus.PadLeft($host.ui.RawUI.BufferSize.Width - $msg.Length)
+Write-Host "$msg{$testStatus}" -ForegroundColor $writecolor
+Write-Host " "
+
+$totalTestCasesMsg = "Total Test Cases    : $($_.TotalTestCases)".PadRight(($host.ui.Length.rawui.buffersize / 2) -1 )
+$passingTestCasesMsg = "$($_.PassingTestCases) ( $([Math]::Round($_.PercentPassingTestCases,2))% Passed".PadLeft(($host.ui.Length.rawui.buffersize / 2) -1)
+$totalTestPassesMsg = "Total Test Passes : $($_.TotalTestPasses)".PadRight(($host.ui.Length.rawui.buffersize / 2) -1) 
+$passingTestPassesMsg = "$($_.PassingTestPasses) $([Math]::Round($_.PercentPassingTestPasses,2))% Passed".PadLeft(($host.ui.Length.rawui.buffersize / 2) -1)
+
+
+Write-Host "${totalTestCasesMsg}${PassingTestCasesMsg}" -ForegroundColor $writecolor
+Write-Host "${totalTestPassesMsg}${PassingTestPassesMsg}" -ForegroundColor $writecolor
+Write-Host " "
+
+    } else {
+$summary = $_ 
+$passingTestCasesGraphObject = New-Object PSObject |
+Add-Member NoteProperty Passed $($summary.PassingTestCases) -Force -PassThru |
+Add-Member NoteProperty Failed $($summary.TotalTestCases - $summary.PassingTestCases) -Force -PassThru
+
+
+$passingTestPassesGraphObject = 
+New-Object PSObject |
+Add-Member NoteProperty Passed $($summary.PassingTestPasses) -Force -PassThru |
+Add-Member NoteProperty Failed $($summary.TotalTestPasses - $summary.PassingTestPasses) -Force -PassThru
+"
+&lt;div&gt;
+    &lt;h2&gt;$($_.Module)&lt;/h2&gt;
+    &lt;div style='width:40%;margin-left:5%;margin-right:5%;float:left;'&gt;
+        $($passingTestCasesGraphObject | Out-HTML -AsPieGraph -ColorList "#006400", "#800000" -GraphWidth 250 -GraphHeight 250 -Header "Test Cases")
+    &lt;/div&gt;
+    &lt;div style='width:40%;margin-left:5%;margin-right:5%;float:left;'&gt;
+        $($passingTestCasesGraphObject | Out-HTML -AsPieGraph -ColorList "#006400", "#800000" -GraphWidth 250 -GraphHeight 250 -Header "Test Passes")
+    &lt;/div&gt;
+    &lt;br style='clear:both' /&gt;
+&lt;/div&gt;        
+"
+    }
+</ScriptBlock>
+                  </ExpressionBinding>
+                </CustomItem>
+              </Frame>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>ScriptCop.Command.Coverage.Report</Name>
+      <ViewSelectedBy>
+        <TypeName>ScriptCop.Command.Coverage.Report</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <Frame>
+                <CustomItem>
+                  <ExpressionBinding>
+                    <ScriptBlock>
+    if (-not ($request -and $response)) {
+        $_ | Select-Object -Property PercentageCommandCoverage, 
+            NumberOfCommandsCovered, 
+            TotalNumberOfCommands, 
+            OverallParameterCoverage, 
+            ParameterCoverageInCoveredCommands, 
+            NumberOfParametersCovered, 
+            TotalNumberOfParameters | 
+            Out-Host
+        ''
+    } else {
+$summary = $_ 
+$overallCommandCoverage = New-Object PSObject |
+Add-Member NoteProperty Covered $($summary.NumberOfCommandsCovered) -Force -PassThru |
+Add-Member NoteProperty Uncovered $($summary.TotalNumberOfCommands - $summary.NumberOfCommandsCovered) -Force -PassThru
+
+
+$coveredCommandParameterCoverage = 
+New-Object PSObject |
+Add-Member NoteProperty Covered $($summary.NumberOfParametersCovered) -Force -PassThru |
+Add-Member NoteProperty Uncovered $($summary.CoveredParameterTotal - $summary.NumberOfParametersCovered) -Force -PassThru
+
+
+$totalParameterCoverage = 
+New-Object PSObject |
+Add-Member NoteProperty Covered $($summary.NumberOfParametersCovered) -Force -PassThru |
+Add-Member NoteProperty Uncovered $($summary.TotalNumberOfParameters - $summary.NumberOfParametersCovered) -Force -PassThru
+"
+&lt;div&gt;
+    &lt;h3&gt;$($_.Module) - Command Coverage&lt;/h3&gt;
+    &lt;div style='width:30%;margin-left:2.5%;margin-right:2.5%;float:left;'&gt;
+        $($overallCommandCoverage | Out-HTML -AsPieGraph -ColorList "#006400", "#800000" -GraphWidth 200 -GraphHeight 200 -Header "Overall Command Coverage")
+    &lt;/div&gt;
+    &lt;div style='width:30%;margin-left:2.5%;margin-right:2.5%;float:left;'&gt;
+        $($coveredCommandParameterCoverage | Out-HTML -AsPieGraph -ColorList "#006400", "#800000" -GraphWidth 200 -GraphHeight 200 -Header "Parameter Coverage (of Covered commands)")
+    &lt;/div&gt;
+    &lt;div style='width:30%;margin-left:2.5%;margin-right:2.5%;float:left;'&gt;
+        $($totalParameterCoverage | Out-HTML -AsPieGraph -ColorList "#006400", "#800000" -GraphWidth 200 -GraphHeight 200 -Header "Overall Parameter Coverage")
+    &lt;/div&gt;
+    &lt;br style='clear:both' /&gt;
+&lt;/div&gt;        
+"        
     }
 </ScriptBlock>
                   </ExpressionBinding>
