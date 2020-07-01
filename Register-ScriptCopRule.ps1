@@ -66,9 +66,9 @@
                     $parameterSetNames -contains $_.Name
                 } |
                 ForEach-Object {
-                    $ScriptCopRules[$_.Name] += $Rule
-                    $ScriptCopRules[$_.Name] =
-                        @($ScriptCopRules[$_.Name] |
+                    $script:ScriptCopRules[$_.Name] += $Rule
+                    $script:ScriptCopRules[$_.Name] =
+                        @($script:ScriptCopRules[$_.Name] |
                             Select-Object -Unique)
                 }
 
@@ -83,6 +83,8 @@
             $command | Register-ScriptCopRule
             #endregion
         }
+
+        $script:ScriptCopRules = $scriptCopRules
 
     }
 }
