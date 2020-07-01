@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-16"?>
+<!-- Generated with EZOut 1.8.3.1: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
 <Configuration>
   <ViewDefinitions>
     <View>
@@ -32,131 +33,6 @@
       </TableControl>
     </View>
     <View>
-      <Name>ScriptCop.Test.Pass.Output</Name>
-      <ViewSelectedBy>
-        <TypeName>ScriptCop.Test.Pass.Output</TypeName>
-      </ViewSelectedBy>
-      <CustomControl>
-        <CustomEntries>
-          <CustomEntry>
-            <CustomItem>
-              <Frame>
-                <CustomItem>
-                  <ExpressionBinding>
-                    <ScriptBlock>
-$writeColor = if ($_.Passed) {
-    "DarkGreen"
-} else {
-    "Red"
-}
-$testStatus = if ($_.Passed) {
-    "--- Passed --- "
-} else {
-    "*** Failed *** "
-}
-
-if (-not ($request -and $response)) {
-    
-
-$msg = " $($_.TestPass)"
-
-$testStatus = $testStatus.PadLeft($host.ui.RawUI.BufferSize.Width - $msg.Length)
-Write-Host " " 
-Write-Host "${Msg}$testStatus" -ForegroundColor $writeColor -NoNewline
-Write-Host " " 
-$null= ($_.Results | Out-String)
-
-
-''
-} else {
-"&lt;div style='background-color:$writeColor;color:#ffffff'&gt;
-    &lt;div style='float:left;width:20%;font-size:1.22em'&gt;
-        &lt;h3&gt;
-          $($_.TestPass)  
-        &lt;/h3&gt;
-    &lt;/div&gt;
-    &lt;div style='float:right;width:20%;text-align:right;'&gt;
-        &lt;span style='color:#ffffff;font-size:1.22em'&gt;$testStatus&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;br style='clear:both'/&gt;
-    &lt;div style='width:80%;margin-left:20%'&gt;
-        $($_.Results | Out-html)
-    &lt;/div&gt;
-&lt;/div&gt;
-"    
-}
-</ScriptBlock>
-                  </ExpressionBinding>
-                </CustomItem>
-              </Frame>
-            </CustomItem>
-          </CustomEntry>
-        </CustomEntries>
-      </CustomControl>
-    </View>
-    <View>
-      <Name>ScriptCop.Test.Output</Name>
-      <ViewSelectedBy>
-        <TypeName>ScriptCop.Test.Output</TypeName>
-      </ViewSelectedBy>
-      <CustomControl>
-        <CustomEntries>
-          <CustomEntry>
-            <CustomItem>
-              <Frame>
-                <CustomItem>
-                  <ExpressionBinding>
-                    <ScriptBlock>
-    $writeColor = if ($_.Passed) {
-        "DarkGreen"
-    } else {
-        "Red"
-    }
-    $testStatus = if ($_.Passed) {
-        "--- Passed --- "
-    } else {
-        "*** Failed *** "
-    }
-
-if (-not ($Request -and $response)) {
-
-    $msg = "   $($_.TestCase)"
-    $testStatus = $testStatus.PadLeft($host.ui.RawUI.BufferSize.Width - $msg.Length)
-    Write-Host "${Msg}$testStatus" -ForegroundColor $writeColor -NoNewline
-
-    if ($_.Errors) {
-Write-Host "$($_.Errors |Out-String)" -ForegroundColor $writeColor         
-    }
-    ''
-
-} else {
-"
-&lt;div style='float:left;width:80%;font-size:1.11em'&gt;
-    &lt;h4&gt;
-        $($_.TestCase)  
-    &lt;/h4&gt;
-    $(if ($_.Errors) {
-"&lt;pre&gt;
-$($_.Errors | Out-String)
-&lt;/pre&gt;"        
-    })
-&lt;/div&gt;
-&lt;div style='float:right;width:20%;font-size:1.11em;text-align:right'&gt;
-    &lt;span style='font-size:1.11em'&gt;$testStatus&lt;/span&gt;
-&lt;/div&gt;
-&lt;br style='clear:both' /&gt;
-"    
-}
-</ScriptBlock>
-                  </ExpressionBinding>
-                </CustomItem>
-              </Frame>
-            </CustomItem>
-          </CustomEntry>
-        </CustomEntries>
-      </CustomControl>
-    </View>
-    <View>
       <Name>ScriptCop.Test.Pass.Summary</Name>
       <ViewSelectedBy>
         <TypeName>ScriptCop.Test.Pass.Summary</TypeName>
@@ -165,12 +41,10 @@ $($_.Errors | Out-String)
         <CustomEntries>
           <CustomEntry>
             <CustomItem>
-              <Frame>
-                <CustomItem>
-                  <ExpressionBinding>
-                    <ScriptBlock>
+              <ExpressionBinding>
+                <ScriptBlock>
 $writeColor = if ($_.PercentPassingTestCases -eq 100) {
-    "DarkGreen"   
+    "DarkGreen"
 } elseif ($_.PercentPassingTestCases -ge 75)  {
     "DarkYellow"
 } else {
@@ -187,7 +61,7 @@ Write-Host " "
 
 $totalTestCasesMsg = "Total Test Cases    : $($_.TotalTestCases)".PadRight(($host.ui.Length.rawui.buffersize / 2) -1 )
 $passingTestCasesMsg = "$($_.PassingTestCases) ( $([Math]::Round($_.PercentPassingTestCases,2))% Passed".PadLeft(($host.ui.Length.rawui.buffersize / 2) -1)
-$totalTestPassesMsg = "Total Test Passes : $($_.TotalTestPasses)".PadRight(($host.ui.Length.rawui.buffersize / 2) -1) 
+$totalTestPassesMsg = "Total Test Passes : $($_.TotalTestPasses)".PadRight(($host.ui.Length.rawui.buffersize / 2) -1)
 $passingTestPassesMsg = "$($_.PassingTestPasses) $([Math]::Round($_.PercentPassingTestPasses,2))% Passed".PadLeft(($host.ui.Length.rawui.buffersize / 2) -1)
 
 
@@ -196,13 +70,13 @@ Write-Host "${totalTestPassesMsg}${PassingTestPassesMsg}" -ForegroundColor $writ
 Write-Host " "
 
     } else {
-$summary = $_ 
+$summary = $_
 $passingTestCasesGraphObject = New-Object PSObject |
 Add-Member NoteProperty Passed $($summary.PassingTestCases) -Force -PassThru |
 Add-Member NoteProperty Failed $($summary.TotalTestCases - $summary.PassingTestCases) -Force -PassThru
 
 
-$passingTestPassesGraphObject = 
+$passingTestPassesGraphObject =
 New-Object PSObject |
 Add-Member NoteProperty Passed $($summary.PassingTestPasses) -Force -PassThru |
 Add-Member NoteProperty Failed $($summary.TotalTestPasses - $summary.PassingTestPasses) -Force -PassThru
@@ -216,13 +90,11 @@ Add-Member NoteProperty Failed $($summary.TotalTestPasses - $summary.PassingTest
         $($passingTestCasesGraphObject | Out-HTML -AsPieGraph -ColorList "#006400", "#800000" -GraphWidth 250 -GraphHeight 250 -Header "Test Passes")
     &lt;/div&gt;
     &lt;br style='clear:both' /&gt;
-&lt;/div&gt;        
+&lt;/div&gt;
 "
     }
 </ScriptBlock>
-                  </ExpressionBinding>
-                </CustomItem>
-              </Frame>
+              </ExpressionBinding>
             </CustomItem>
           </CustomEntry>
         </CustomEntries>
@@ -237,34 +109,32 @@ Add-Member NoteProperty Failed $($summary.TotalTestPasses - $summary.PassingTest
         <CustomEntries>
           <CustomEntry>
             <CustomItem>
-              <Frame>
-                <CustomItem>
-                  <ExpressionBinding>
-                    <ScriptBlock>
+              <ExpressionBinding>
+                <ScriptBlock>
     if (-not ($request -and $response)) {
-        $_ | Select-Object -Property PercentageCommandCoverage, 
-            NumberOfCommandsCovered, 
-            TotalNumberOfCommands, 
-            OverallParameterCoverage, 
-            ParameterCoverageInCoveredCommands, 
-            NumberOfParametersCovered, 
-            TotalNumberOfParameters | 
+        $_ | Select-Object -Property PercentageCommandCoverage,
+            NumberOfCommandsCovered,
+            TotalNumberOfCommands,
+            OverallParameterCoverage,
+            ParameterCoverageInCoveredCommands,
+            NumberOfParametersCovered,
+            TotalNumberOfParameters |
             Out-Host
         ''
     } else {
-$summary = $_ 
+$summary = $_
 $overallCommandCoverage = New-Object PSObject |
 Add-Member NoteProperty Covered $($summary.NumberOfCommandsCovered) -Force -PassThru |
 Add-Member NoteProperty Uncovered $($summary.TotalNumberOfCommands - $summary.NumberOfCommandsCovered) -Force -PassThru
 
 
-$coveredCommandParameterCoverage = 
+$coveredCommandParameterCoverage =
 New-Object PSObject |
 Add-Member NoteProperty Covered $($summary.NumberOfParametersCovered) -Force -PassThru |
 Add-Member NoteProperty Uncovered $($summary.CoveredParameterTotal - $summary.NumberOfParametersCovered) -Force -PassThru
 
 
-$totalParameterCoverage = 
+$totalParameterCoverage =
 New-Object PSObject |
 Add-Member NoteProperty Covered $($summary.NumberOfParametersCovered) -Force -PassThru |
 Add-Member NoteProperty Uncovered $($summary.TotalNumberOfParameters - $summary.NumberOfParametersCovered) -Force -PassThru
@@ -281,17 +151,470 @@ Add-Member NoteProperty Uncovered $($summary.TotalNumberOfParameters - $summary.
         $($totalParameterCoverage | Out-HTML -AsPieGraph -ColorList "#006400", "#800000" -GraphWidth 200 -GraphHeight 200 -Header "Overall Parameter Coverage")
     &lt;/div&gt;
     &lt;br style='clear:both' /&gt;
-&lt;/div&gt;        
-"        
+&lt;/div&gt;
+"
     }
 </ScriptBlock>
-                  </ExpressionBinding>
-                </CustomItem>
-              </Frame>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>ScriptCop.Test.Output</Name>
+      <ViewSelectedBy>
+        <TypeName>ScriptCop.Test.Output</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'ScriptCop'
+do {
+    $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+    if (-not $lm) { continue } 
+    if ($lm.FormatPartsLoaded) { break }
+    $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+        foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+            $ParentNode = $partNodeName.Node.ParentNode
+            "$($ParentNode.Name)={
+$($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+        }
+    }) -join [Environment]::NewLine
+    New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+        Import-Module -Global
+    $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+    
+    if (-not $lm.OnRemove) {
+        $lm.OnRemove = $onRemove
+    } else {
+        $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+    }
+    $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+
+} while ($false)
+
+
+$testOutput = $_
+$in = $_
+$writeColor = 
+    if ($testOutput.Passed) {
+        if (-not $host.UI.SupportsVirtualTerminal) { "DarkGreen" } else { "Success" }
+    } else {
+        if (-not $host.UI.SupportsVirtualTerminal) { "Red" } else { "Error" }
+    }
+$testStatus = 
+    if ($testOutput.Passed) {
+        "+"
+    } else {
+        ""
+    }
+
+@(if (-not ($Request -and $response)) {
+
+    $msg = "    [$testStatus]$($testOutput.TestCase)"
+    if (-not $host.UI.SupportsVirtualTerminal) {
+        Write-Host $msg -ForegroundColor $writeColor
+
+        if ($test.Errors) {
+            Write-Host "$($testOutput.Errors |Out-String)" -ForegroundColor $writeColor
+        }
+        ''
+
+    } else {
+        . ${ScriptCop_SetOutputStyle} -foregroundColor $writeColor
+        $msg
+        #[Environment]::NewLine
+        if ($testOutput.Errors) {
+            
+            $testOutput.Errors | Out-String -Width $host.UI.RawUI.BufferSize.Width
+        }
+        . ${ScriptCop_clearOutputStyle}
+    }
+} else {
+"
+&lt;div style='float:left;width:80%;font-size:1.11em'&gt;
+    &lt;h4&gt;
+        $($testOutput.TestCase)
+    &lt;/h4&gt;
+    $(if ($testOutput.Errors) {
+"&lt;pre&gt;
+$($testOutput.Errors | Out-String)
+&lt;/pre&gt;"
+    })
+&lt;/div&gt;
+&lt;div style='float:right;width:20%;font-size:1.11em;text-align:right'&gt;
+    &lt;span style='font-size:1.11em'&gt;$testStatus&lt;/span&gt;
+&lt;/div&gt;
+&lt;br style='clear:both' /&gt;
+"
+}) -join ''
+
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>ScriptCop.Test.Pass.Output</Name>
+      <ViewSelectedBy>
+        <TypeName>ScriptCop.Test.Pass.Output</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'ScriptCop'
+do {
+    $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+    if (-not $lm) { continue } 
+    if ($lm.FormatPartsLoaded) { break }
+    $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+        foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+            $ParentNode = $partNodeName.Node.ParentNode
+            "$($ParentNode.Name)={
+$($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+        }
+    }) -join [Environment]::NewLine
+    New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+        Import-Module -Global
+    $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+    
+    if (-not $lm.OnRemove) {
+        $lm.OnRemove = $onRemove
+    } else {
+        $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+    }
+    $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+
+} while ($false)
+
+
+
+$testPassOutput = $_
+
+$writeColor = 
+    if ($_.Passed) {
+        if (-not $host.UI.SupportsVirtualTerminal) { "DarkGreen" } else { "Success" } 
+    } else {
+        if (-not $host.UI.SupportsVirtualTerminal) { "Red" } else { "Error" }
+    }
+$testStatus = 
+    if ($_.Passed) {
+        "+"
+    } else {
+        "-"
+    }
+
+
+
+@(if (-not ($request -and $response)) {
+    $msg = " [$testStatus]$($testPassOutput.TestPass)"
+    if (-not $host.UI.SupportsVirtualTerminal) {
+        Write-Host " "
+        Write-Host "$Msg" -ForegroundColor $writeColor -NoNewline
+        Write-Host " "
+        $null= ($testPassOutput.Results | Out-String)
+        ''
+    } else {
+        [Environment]::NewLine
+        . ${ScriptCop_SetOutputStyle} -foregroundColor $writeColor
+        "$Msg"
+        . ${ScriptCop_clearOutputStyle}
+        [Environment]::NewLine
+        $($testPassOutput.Results | Out-String -Width $host.UI.RawUI.BufferSize.Width).Trim()
+    }
+} else {
+    "&lt;div style='background-color:$writeColor;color:#ffffff'&gt;
+        &lt;div style='float:left;width:20%;font-size:1.22em'&gt;
+            &lt;h3&gt;
+              $($_.TestPass)
+            &lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div style='float:right;width:20%;text-align:right;'&gt;
+            &lt;span style='color:#ffffff;font-size:1.22em'&gt;$testStatus&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;br style='clear:both'/&gt;
+        &lt;div style='width:80%;margin-left:20%'&gt;
+            $($_.Results | Out-html)
+        &lt;/div&gt;
+    &lt;/div&gt;
+    "
+}) -join ''
+</ScriptBlock>
+              </ExpressionBinding>
             </CustomItem>
           </CustomEntry>
         </CustomEntries>
       </CustomControl>
     </View>
   </ViewDefinitions>
+  <Controls>
+    <Control>
+      <Name>${ScriptCop_SetOutputStyle}</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>&lt;#
+.Synopsis
+    Adds style to a format output
+.Description
+    Adds style information to a format output, including:
+
+    * ForegroundColor
+    * BackgroundColor
+    * Bold
+    * Underline
+.Notes
+    Stylized Output works in two contexts at present:
+    * Rich consoles (Windows Terminal, PowerShell.exe, Pwsh.exe) (when $host.UI.SupportsVirtualTerminal)
+    * Web pages (Based off the presence of a $Request variable, or when $host.UI.SupportsHTML (you must add this property to $host.UI))
+
+    IsFormatPart: true
+#&gt;
+param(
+[string]$ForegroundColor,
+[string]$BackgroundColor,
+[switch]$Bold,
+[switch]$Underline,
+[switch]$Invert
+)
+
+$canUseANSI = $host.UI.SupportsVirtualTerminal
+$canUseHTML = $Request -or $host.UI.SupportsHTML
+if (-not ($canUseANSI -or $canUseHTML)) { return }
+
+$knownStreams = @{
+    Output='';Error='BrightRed';Warning='BrightYellow';
+    Verbose='BrightCyan';Debug='Yellow';Progress='Cyan';
+    Success='BrightGreen';Failure='Red';Default=''}
+$standardColors = 'Black', 'Red', 'Green', 'Yellow', 'Blue','Magenta', 'Cyan', 'White'
+$brightColors   = 'BrightBlack', 'BrightRed', 'BrightGreen', 'BrightYellow', 'BrightBlue','BrightMagenta', 'BrightCyan', 'BrightWhite'
+$n =0
+$cssClasses = @()
+$styleAttributes =
+    @(:nextColor foreach ($hc in $ForegroundColor,$BackgroundColor) {
+        $n++
+        if (-not $hc) { continue }
+        if ($hc[0] -eq [char]0x1b) {
+            if ($canUseANSI) { 
+                $hc; continue
+            }
+        }
+
+        $ansiStartPoint = if ($n -eq 1) { 30 } else { 40 } 
+        if ($knownStreams.ContainsKey($hc)) {
+            $i = $brightColors.IndexOf($knownStreams[$hc])
+            if ($canUseHTML) {
+                $cssClasses += $hc
+            } else {
+                if ($i -ge 0 -and $canUseANSI) {
+                    '' + [char]0x1b + "[1;$($ansiStartPoint + $i)m"
+                } else {
+                    $i = $standardColors.IndexOf($knownStreams[$hc])
+                    if ($i -ge 0 -and $canUseANSI) {
+                        '' + [char]0x1b + "[1;$($ansiStartPoint + $i)m"
+                    } elseif ($i -le 0 -and $canUseANSI) {                        
+                        '' + [char]0x1b + "[$($ansistartpoint + 8):5m"
+                    }
+                }
+            }
+            continue nextColor
+        }
+        elseif ($standardColors -contains $hc) {
+            for ($i = 0; $i -lt $standardColors.Count;$i++) {
+                if ($standardColors[$i] -eq $hc) {
+                    if ($canUseANSI -and -not $canUseHTML) {
+                        '' + [char]0x1b + "[$($ansiStartPoint + $i)m"
+                    } else {
+                        $cssClasses += $standardColors[$i]
+                    }
+                    continue nextColor
+                }
+            }
+        } elseif ($brightColors -contains $hc) {
+            for ($i = 0; $i -lt $brightColors.Count;$i++) {
+                if ($brightColors[$i] -eq $hc) {
+                    if ($canUseANSI -and -not $canUseHTML) {
+                        '' + [char]0x1b + "[1;$($ansiStartPoint + $i)m"
+                    } else {
+                        $cssClasses += $standardColors[$i]
+                    }
+                    continue nextColor
+                }
+            }
+        }
+
+
+        if ($hc -and -not $hc.StartsWith('#')) { 
+            $placesToLook=
+                @(if ($hc.Contains('.')) {
+                    $module, $setting = $hc -split '\.', 2
+                    $theModule = Get-Module $module
+                    $theModule.PrivateData.Color,
+                        $theModule.PrivateData.Colors,
+                        $theModule.PrivateData.Colour,
+                        $theModule.PrivateData.Colours,
+                        $theModule.PrivateData.EZOut,
+                        $global:PSColors,
+                        $global:PSColours
+                } else {
+                    $setting = $hc
+                    $moduleColorSetting = $theModule.PrivateData.PSColors.$setting
+                })
+
+            foreach ($place in $placesToLook) {
+                if (-not $place) { continue }
+                foreach ($propName in $setting -split '\.') {
+                    $place = $place.$propName
+                    if (-not $place) { break }
+                }
+                if ($place -and "$place".StartsWith('#') -and 4,7 -contains "$place".Length) {
+                    $hc = $place
+                    continue
+                }
+            }
+            if (-not $hc.StartsWith -or -not $hc.StartsWith('#')) {
+                continue
+            }
+        }
+        $r,$g,$b = if ($hc.Length -eq 7) {
+            [int]::Parse($hc[1..2]-join'', 'HexNumber')
+            [int]::Parse($hc[3..4]-join '', 'HexNumber')
+            [int]::Parse($hc[5..6] -join'', 'HexNumber')
+        }elseif ($hc.Length -eq 4) {
+            [int]::Parse($hc[1], 'HexNumber') * 16
+            [int]::Parse($hc[2], 'HexNumber') * 16
+            [int]::Parse($hc[3], 'HexNumber') * 16
+        }
+
+        if ($canUseHTML) {
+            if ($n -eq 1) { "color:$hc" }
+            elseif ($n -eq 2) { "background-color:$hc"} 
+        }
+        elseif ($canUseANSI) {
+            if ($n -eq 1) { [char]0x1b+"[38;2;$r;$g;${b}m" }
+            elseif ($n -eq 2) { [char]0x1b+"[48;2;$r;$g;${b}m" }
+        }
+        
+    })
+
+
+if ($Bold) {
+    $styleAttributes += 
+        if ($canUseHTML) {
+            "font-weight:bold"
+        }
+        elseif ($canUseANSI) 
+        {
+            [char]0x1b + "[1m"
+        }
+}
+
+if ($Underline) {
+    $styleAttributes += 
+        if ($canUseHTML) {
+            "text-decoration:underline"
+        } elseif ($canUseANSI) {
+            [char]0x1b + "[4m"
+        }
+}
+
+if ($Invert) {
+    $styleAttributes += 
+        if ($canUseHTML) {
+            "filter:invert(100%)"
+        } elseif ($canUseANSI) {
+            [char]0x1b + "[7m"            
+        }
+}
+
+if ($canUseHTML) {
+   
+    "&lt;span$(
+        if ($styleAttributes) { " style='$($styleAttributes -join ';')'"}
+    )$(
+        if ($cssClasses) { " class='$($cssClasses -join ' ')'"}
+    )&gt;"
+} elseif ($canUseANSI) {
+    $styleAttributes -join ''
+}</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>${ScriptCop_clearOutputStyle}</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>&lt;#
+.Synopsis
+    Clears the output style
+.Description
+    Clears ANSI output style or closes the most recent span element.
+
+    ANSI stylization can be toggled off individually (for instance, to stop applying an -Underline but leave the color unchanged)
+.Notes
+    IsFormatPart: true
+#&gt;
+param(
+# If set, will explicitly clear ANSI Bold
+[switch]
+$Bold,
+# If set, will explicitly clear ANSI Underline
+[switch]
+$Underline,
+# If set, will explicitly clear ANSI Invert
+[switch]
+$Invert,
+# If set, will explicitly clear ANSI Foreground Color
+[switch]
+$ForegroundColor,
+# If set, will explicitly clear ANSI Background Color
+[switch]
+$BackgroundColor
+)
+@(if ($request -or $host.UI.SupportsHTML) {
+    "&lt;/span&gt;"
+} elseif ($Host.UI.SupportsVirtualTerminal) {
+    if ($Underline) {
+        [char]0x1b + "[24m"
+    }
+    if ($Bold) {        
+        [char]0x1b + "[21m"
+    }
+    if ($Invert) {
+        [char]0x1b + '[27m'
+    }
+    if ($ForegroundColor) {
+        [char]0x1b + '[39m'
+    }
+    if ($BackgroundColor) {
+        [char]0x1b + '[49m'
+    }
+
+    if (-not ($Underline -or $Bold -or $Invert -or $ForegroundColor -or $BackgroundColor)) {
+        [char]0x1b + '[0m'
+    }
+    
+}) -join ''</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+  </Controls>
 </Configuration>
