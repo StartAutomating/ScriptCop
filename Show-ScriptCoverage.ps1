@@ -55,6 +55,7 @@
     #>
     [CmdletBinding(DefaultParameterSetName="NoArguments")]
     [OutputType([PSObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "", Justification="This needs to be global")]
     param(
     # The file to instrument
     [Parameter(Mandatory=$true,Position=0,ValueFromPipelineByPropertyName=$true)]
