@@ -12,6 +12,7 @@
     #>
     [CmdletBinding(DefaultParameterSetName='Name')]
     [OutputType([Nullable])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "", Justification="PSScriptAnalyzer misses the assignment")]
     param(
     # The name of the rule
     [Parameter(ParameterSetName='Name',Mandatory=$true)]
