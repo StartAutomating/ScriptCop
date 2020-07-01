@@ -15,6 +15,7 @@
         Get-Module MyModule | Test-Command | Repair-Command
     #>
     [OutputType([Nullable])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "holdup", Justification="PSScriptAnalyzer false positive.")]
     param(
     # The Rule that flagged the problem
     [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)]
@@ -129,7 +130,7 @@ $($_ | Out-String)
                         & $fixer |
                         ForEach-Object {
                             $fix = $_
-                            if ($_.FixRequiresRescan) {
+                            if ($fix.FixRequiresRescan) {
                                 $holdUp = $true
                             }
                             throw $holdup
