@@ -20,7 +20,7 @@ describe ScriptCop {
             $theModuleRoot = $theModule.Path.Substring(0, $theModule.Path.LastIndexOf([IO.Path]::DirectorySeparatorChar))
             $theModuleRoot = $theModuleRoot + [IO.Path]::DirectorySeparatorChar + 'ScriptCop.psd1'
             Import-Module $theModuleRoot -Global -Force -PassThru |
-                   Test-Module
+                   Test-Module -GetCommandCoverage
         }
     }
 }
