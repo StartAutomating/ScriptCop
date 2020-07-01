@@ -31,7 +31,6 @@ Export-ModuleMember -Function Get-ScriptCopPatrol, Register-ScriptCopPatrol, Unr
 #region General Purpose Functions
 . $psScriptRoot\Get-FunctionFromScript.ps1
 . $psScriptRoot\Get-ScriptToken.ps1
-. $psScriptRoot\Save-Function.ps1
 #endregion
 
 #region Command Coverage
