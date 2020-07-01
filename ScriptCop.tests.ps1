@@ -15,12 +15,8 @@ describe ScriptCop {
     }
 
     context 'Testing' {
-        it 'Can reload and test itself' {
-            $theModule = Get-Module ScriptCop
-            $theModuleRoot = $theModule.Path.Substring(0, $theModule.Path.LastIndexOf([IO.Path]::DirectorySeparatorChar))
-            $theModuleRoot = $theModuleRoot + [IO.Path]::DirectorySeparatorChar + 'ScriptCop.psd1'
-            Import-Module $theModuleRoot -Global -Force -PassThru |
-                   Test-Module
+        it 'Can test itself' {
+            Get-Module ScriptCop | Test-Module
         }
     }
 }
