@@ -14,6 +14,7 @@ function Unregister-ScriptCopFixer
         Register-ScriptCopFixer
     .#>
     [CmdletBinding(DefaultParameterSetName='Name')]
+    [OutputType([Nullable])]
     param(
     # Unregisters a fixer of a particular name
     [Parameter(ParameterSetName='Name',Mandatory=$true)]

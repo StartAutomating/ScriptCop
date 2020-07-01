@@ -13,6 +13,7 @@ function Register-ScriptCopFixer
         Get-ScriptCopFixer
     #>
     [CmdletBinding(DefaultParameterSetName='Command')]
+    [OutputType([Nullable])]
     param(
     # The fixer command
     [Parameter(ParameterSetName='Command',
