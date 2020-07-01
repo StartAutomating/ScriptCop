@@ -19,7 +19,7 @@ $testStatus =
 
 
 @(if (-not ($request -and $response)) {
-    $msg = " [$testStatus]$($testPassOutput.TestPass)"
+    $msg = " [$testStatus] $($testPassOutput.TestPass)"
     if (-not $host.UI.SupportsVirtualTerminal) {
         Write-Host " "
         Write-Host "$Msg" -ForegroundColor $writeColor -NoNewline

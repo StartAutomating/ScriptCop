@@ -17,7 +17,7 @@ $testStatus =
 
 @(if (-not ($Request -and $response)) {
 
-    $msg = "    [$testStatus]$($testOutput.TestCase)"
+    $msg = "    [$testStatus] $($testOutput.TestCase)"
     if (-not $host.UI.SupportsVirtualTerminal) {
         Write-Host $msg -ForegroundColor $writeColor
 
