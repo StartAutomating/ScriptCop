@@ -10,6 +10,7 @@ function Get-ScriptCopFixer
     .Link
         Repair-Command
     #>
+    [OutputType('ScriptCopRule')]
     param()
     
     begin {
