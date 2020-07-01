@@ -38,7 +38,7 @@ Export-ModuleMember -Function Get-ScriptCopPatrol, Register-ScriptCopPatrol, Unr
 . $psScriptRoot\Disable-CommandCoverage.ps1
 . $psScriptRoot\Enable-CommandCoverage.ps1
 . $psScriptRoot\Get-CommandCoverage.ps1
-#endregion 
+#endregion
 
 
 #region Major exported commands
@@ -50,12 +50,12 @@ Export-ModuleMember -Function Get-ScriptCopPatrol, Register-ScriptCopPatrol, Unr
 
 Export-ModuleMember -Function Test-Command, Test-Module,Repair-Command, Show-ScriptCoverage, Enable-CommandCoverage, Disable-CommandCoverage,Get-CommandCoverage
 #endregion
-    
+
 #region Import Rules From Rules Directory
 $RuleFiles = [IO.Directory]::GetFiles("$psScriptRoot\Rules")
 
 
-$RuleScripts = 
+$RuleScripts =
     foreach ($_ in $RuleFiles) {
         if (($_ -as [IO.FileInfo]).Extension -eq '.ps1') {
             $ExecutionContext.SessionState.InvokeCommand.GetCommand($_, 'ExternalScript')
@@ -64,8 +64,8 @@ $RuleScripts =
 
 
 foreach ($_ in $RuleScripts) {
-    Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_ 
-    @(if ($RuleImportError) {                        
+    Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_
+    @(if ($RuleImportError) {
         # Ok, see if it contains functions
         $functionOnly = Get-FunctionFromScript -ScriptBlock ([ScriptBlock]::Create($_.ScriptContents))
         . $_
@@ -78,38 +78,38 @@ foreach ($_ in $RuleScripts) {
                 if ($foundCmd) {
                     $cmds += $foundCmd
                 }
-                #$cmds+=Get-Command $matches[1] -ErrorAction SilentlyContinue 
-            }                        
+                #$cmds+=Get-Command $matches[1] -ErrorAction SilentlyContinue
+            }
         }
-            
+
         foreach ($cmd in $cmds) {
-            Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError2 -CommandInfo $cmd 
-                    
+            Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError2 -CommandInfo $cmd
+
             if ($ruleImportError2) {
                 Write-Verbose ($RuleImportError2 |Out-String)
             } else {
                 $cmd
             }
         }
-            
+
         if (-not $RuleImportError2) {
             Write-Debug ($RuleImportError |Out-String)
         }
     } else {
-        $_ 
+        $_
     }) | Register-ScriptCopRule
 }
 
 <#
-Get-ChildItem $psScriptRoot\Rules | 
-    Get-Command { $_.Fullname } -ErrorAction SilentlyContinue | 
-    Where-Object { 
+Get-ChildItem $psScriptRoot\Rules |
+    Get-Command { $_.Fullname } -ErrorAction SilentlyContinue |
+    Where-Object {
         $_ -is [Management.Automation.ExternalScriptInfo]
-    } |     
-    Foreach-Object -Verbose:($Verbose -ne 'SilentlyContinue') { 
-        Write-Verbose "Attempting to Import $_"        
-        Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_ 
-        if ($RuleImportError) {                        
+    } |
+    Foreach-Object -Verbose:($Verbose -ne 'SilentlyContinue') {
+        Write-Verbose "Attempting to Import $_"
+        Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_
+        if ($RuleImportError) {
             # Ok, see if it contains functions
             $functionOnly = Get-FunctionFromScript -ScriptBlock ([ScriptBlock]::Create($_.ScriptContents))
             . $_
@@ -122,14 +122,14 @@ Get-ChildItem $psScriptRoot\Rules |
                     if ($foundCmd) {
                         $cmds += $foundCmd
                     }
-                    #$cmds+=Get-Command $matches[1] -ErrorAction SilentlyContinue 
-                }                        
+                    #$cmds+=Get-Command $matches[1] -ErrorAction SilentlyContinue
+                }
             }
-            
-            $cmds | 
+
+            $cmds |
                 Where-Object {
-                    Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError2 -CommandInfo $_ 
-                    
+                    Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError2 -CommandInfo $_
+
                     if ($ruleImportError2) {
                         Write-Verbose ($RuleImportError2 |Out-String)
                     } else {
@@ -137,20 +137,20 @@ Get-ChildItem $psScriptRoot\Rules |
                     }
                 } |
                 Register-ScriptCopRule
-            
+
             if (-not $RuleImportError2) {
                 Write-Debug ($RuleImportError |Out-String)
             }
         } else {
             $_ | Register-ScriptCopRule
-        }        
-    
+        }
+
     }
-#>  
+#>
 $FixerFiles = [IO.Directory]::GetFiles("$psScriptRoot\Fixers")
 
 
-$FixerScripts = 
+$FixerScripts =
     foreach ($_ in $FixerFiles) {
         if (($_ -as [IO.FileInfo]).Extension -eq '.ps1') {
             $ExecutionContext.SessionState.InvokeCommand.GetCommand($_, 'ExternalScript')
@@ -159,8 +159,8 @@ $FixerScripts =
 
 foreach ($_ in $FixerScripts) {
     Write-Verbose "Attempting to Import $_"
-    Test-ScriptCopFixer -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_ 
-    @(if ($RuleImportError) {            
+    Test-ScriptCopFixer -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_
+    @(if ($RuleImportError) {
         Write-Verbose ($RuleImportError |Out-String)
         # Ok, see if it contains functions
         $functionOnly = Get-FunctionFromScript -ScriptBlock ([ScriptBlock]::Create($_.ScriptContents))
@@ -174,39 +174,39 @@ foreach ($_ in $FixerScripts) {
                 if ($foundCmd) {
                     $cmds += $foundCmd
                 }
-                #$cmds+=Get-Command $matches[1] -ErrorAction SilentlyContinue 
-            }                        
+                #$cmds+=Get-Command $matches[1] -ErrorAction SilentlyContinue
+            }
         }
 
         foreach ($cmd in $cmds) {
-            Test-ScriptCopFixer -ErrorAction SilentlyContinue -ErrorVariable RuleImportError2 -CommandInfo $cmd 
-                    
+            Test-ScriptCopFixer -ErrorAction SilentlyContinue -ErrorVariable RuleImportError2 -CommandInfo $cmd
+
             if ($ruleImportError2) {
                 Write-Verbose ($RuleImportError2 |Out-String)
             } else {
                 $cmd
             }
         }
-             
+
         if (-not $RuleImportError2) {
             Write-Verbose ($RuleImportError1 |Out-String)
         }
     } else {
-        $_ 
-    }) | Register-ScriptCopFixer         
+        $_
+    }) | Register-ScriptCopFixer
 
 }
 
 
-Get-ChildItem $psScriptRoot\Fixers | 
-    Get-Command { $_.Fullname } -ErrorAction SilentlyContinue | 
-    Where-Object { 
+Get-ChildItem $psScriptRoot\Fixers |
+    Get-Command { $_.Fullname } -ErrorAction SilentlyContinue |
+    Where-Object {
         $_ -is [Management.Automation.ExternalScriptInfo]
-    } |     
-    Foreach-Object { 
+    } |
+    Foreach-Object {
         Write-Verbose "Attempting to Import $_"
-        Test-ScriptCopFixer -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_ 
-        if ($RuleImportError) {            
+        Test-ScriptCopFixer -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_
+        if ($RuleImportError) {
             Write-Verbose ($RuleImportError |Out-String)
             # Ok, see if it contains functions
             $functionOnly = Get-FunctionFromScript -ScriptBlock ([ScriptBlock]::Create($_.ScriptContents))
@@ -220,14 +220,14 @@ Get-ChildItem $psScriptRoot\Fixers |
                     if ($foundCmd) {
                         $cmds += $foundCmd
                     }
-                    #$cmds+=Get-Command $matches[1] -ErrorAction SilentlyContinue 
-                }                        
+                    #$cmds+=Get-Command $matches[1] -ErrorAction SilentlyContinue
+                }
             }
 
-            $cmds| 
+            $cmds|
                 Where-Object {
-                    Test-ScriptCopFixer -ErrorAction SilentlyContinue -ErrorVariable RuleImportError2 -CommandInfo $_ 
-                    
+                    Test-ScriptCopFixer -ErrorAction SilentlyContinue -ErrorVariable RuleImportError2 -CommandInfo $_
+
                     if ($ruleImportError2) {
                         Write-Verbose ($RuleImportError2 |Out-String)
                     } else {
@@ -235,21 +235,21 @@ Get-ChildItem $psScriptRoot\Fixers |
                     }
                 } |
                 Register-ScriptCopFixer
-            
+
             if (-not $RuleImportError2) {
                 Write-Verbose ($RuleImportError1 |Out-String)
             }
         } else {
             $_ | Register-ScriptCopFixer
-        }        
-    
-    }    
+        }
+
+    }
 #endregion
 
 #region Import Patrols
 Get-ChildItem $psScriptRoot\Patrols -ErrorAction SilentlyContinue -Filter *.patrol.psd1 |
     ForEach-Object {
-        $fullPath = $_.fullname  
+        $fullPath = $_.fullname
         $name = $_.Name.Replace(".patrol.psd1", "")
         $patrolContent = try { ([PowerShell]::Create().AddScript("
             `$executionContext.SessionState.LanguageMode = 'RestrictedLanguage'
@@ -257,10 +257,10 @@ Get-ChildItem $psScriptRoot\Patrols -ErrorAction SilentlyContinue -Filter *.patr
         ").Invoke())[0] } catch {
             Write-Debug "Error Importing $fullpath : $($_ | Out-string)"
         }
-        
+
         if ($patrolContent) {
             $patrolContent.Name = $name
             Register-ScriptCopPatrol @patrolContent
-        }        
+        }
     }
 #endregion
