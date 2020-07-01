@@ -18,7 +18,7 @@ describe ScriptCop {
         it 'Can reload and test itself' {
             $theModule = Get-Module ScriptCop
             Import-Module ($theModule |
-                Split-Path) -Global -Force -PassThru |
+                Split-Path | Join-Path -ChildPath ScriptCop.psd1) -Global -Force -PassThru |
                    Test-Module
         }
     }
