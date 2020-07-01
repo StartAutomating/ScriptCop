@@ -50,7 +50,7 @@ Export-ModuleMember -Function Test-Command, Test-Module,Repair-Command, Show-Scr
 #endregion
 
 #region Import Rules From Rules Directory
-$RuleFiles = [IO.Directory]::GetFiles("$psScriptRootRules")
+$RuleFiles = [IO.Directory]::GetFiles("$psScriptRoot$([io.path]::DirectorySeparatorChar)Rules")
 
 
 $RuleScripts =
