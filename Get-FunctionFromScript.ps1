@@ -13,6 +13,8 @@
                 "bar"
             }
         }
+    .Link
+        Test-Command
     #>
     [CmdletBinding(DefaultParameterSetName='File')]
     param(
