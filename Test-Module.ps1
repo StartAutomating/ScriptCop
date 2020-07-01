@@ -96,7 +96,7 @@
         if (Test-Path "$moduleRoot\$name.ScriptCop.psd1") {
             $scriptTestPass += & ([ScriptBlock]::Create("
             data {
-                $([IO.File]::ReadAllText("$moduleRoot\$name.ScriptCop.psd1"))
+                $([IO.File]::ReadAllText("$moduleRoot$([IO.Path]::DirectorySeparatorChar)$name.ScriptCop.psd1"))
             }
             "))
 
