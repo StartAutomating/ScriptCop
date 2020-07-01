@@ -33,8 +33,7 @@
 
     process {
         #region Walk Collection
-        $script:ScriptCopRules |
-            Select-Object -ExpandProperty Values |
+        $script:ScriptCopRules.Values |
             Select-Object -Unique |
             ForEach-Object { $_ } |
             ForEach-Object { $_ } |
