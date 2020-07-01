@@ -19,6 +19,7 @@
     #>
     [CmdletBinding(DefaultParameterSetName='Command')]
     [OutputType('ScriptCopError')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "", Justification="Variables assigned for debugging")]
     param(
     # The command or module to test.  If the object is not a module info or command
     # info, it will not work.

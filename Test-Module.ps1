@@ -47,6 +47,7 @@
         Show-ScriptCoverage
     #>
     [OutputType([PSObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "", Justification="PSScriptAnalyzer cannot see the reference")]
     param(
     # The name of the module
     [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)]
