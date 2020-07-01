@@ -50,7 +50,7 @@ Export-ModuleMember -Function Test-Command, Test-Module,Repair-Command, Show-Scr
 #endregion
 
 #region Import Rules From Rules Directory
-$RuleFiles = [IO.Directory]::GetFiles("$psScriptRoot$([io.path]::DirectorySeparatorChar)Rules")
+$RuleFiles = [IO.Directory]::GetFiles("$(Join-Path $psScriptRoot Rules)")
 
 
 $RuleScripts =
@@ -61,12 +61,12 @@ $RuleScripts =
     }
 
 
-foreach ($_ in $RuleScripts) {
-    Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $_
+foreach ($ruleScript in $RuleScripts) {
+    Test-ScriptCopRule -ErrorAction SilentlyContinue -ErrorVariable RuleImportError -CommandInfo $ruleScript
     @(if ($RuleImportError) {
         # Ok, see if it contains functions
-        $functionOnly = Get-FunctionFromScript -ScriptBlock ([ScriptBlock]::Create($_.ScriptContents))
-        . $_
+        $functionOnly = Get-FunctionFromScript -ScriptBlock ([ScriptBlock]::Create($ruleScript.ScriptContents))
+        . $ruleScript
         $cmds = @()
         foreach ($f in $functionOnly) {
             #. ([ScriptBlock]::Create($f))
@@ -94,7 +94,7 @@ foreach ($_ in $RuleScripts) {
             Write-Debug ($RuleImportError |Out-String)
         }
     } else {
-        $_
+        $ruleScript
     }) | Register-ScriptCopRule
 }
 
