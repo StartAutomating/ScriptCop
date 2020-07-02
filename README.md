@@ -2,7 +2,7 @@
 ScriptCop [1.6]
 ===============
 
-ScriptCop is a module to help make sure your PowerShell scripts are following the rules
+A PowerShell Static Analysis Tool to help your scripts follow the rules.
 ---------------
 
 ### Commands
