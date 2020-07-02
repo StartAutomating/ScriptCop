@@ -1,5 +1,6 @@
 ﻿function Save-ScriptCopPatrol
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "", Justification="PSScriptAnalyzer False Positives")]
     param(
     # The name of the scriptcop patrol
     [Parameter(Mandatory=$true,
@@ -32,7 +33,7 @@ $patrolPsd1 = @"
 }
 "@
 
-                if ($ToString) { return $patrolPsd1}
+                if ($ToString) { return $patrolPsd1 }
                 [IO.File]::WriteAllText("$psScriptRoot\Patrols\${Name}.patrol.psd1", $patrolPsd1)
             }
     }

@@ -15,6 +15,7 @@
     .#>
     [CmdletBinding(DefaultParameterSetName='Name')]
     [OutputType([Nullable])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "", Justification="PSScriptAnalyzer False Positives")]
     param(
     # Unregisters a fixer of a particular name
     [Parameter(ParameterSetName='Name',Mandatory=$true)]
