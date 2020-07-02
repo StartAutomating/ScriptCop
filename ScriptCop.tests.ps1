@@ -28,9 +28,10 @@ describe ScriptCop {
             }
 
             Get-Command foo |
-                Test-Command -Patrol Test-Documentation |
-                    Select-Object -First 1 -ExpandProperty Problem |
-                    should -BeLike *examples*
+                Test-Command -Patrol Test-Documentation | # Test foo
+                    Select-Object -ExpandProperty Problem | # extract the problems
+                        Where-Object { $_ -like '*example*' } |
+                            should -BeLike *example* # some problems should complain about examples.
         }
     }
 
