@@ -93,6 +93,26 @@ describe ScriptCop {
         }
     }
 
+    context 'Fault tolerance' {
+        it 'Will not let just any script be a ScriptCop Rule' {
+            {
+                function foo {
+                }
+
+                Get-Command foo | Register-ScriptCopRule -ErrorAction Stop
+            } | should -Throw
+        }
+
+        it 'Will not let just any script be a ScriptCop Fixer' {
+            {
+                function foo {
+                }
+
+                Get-Command foo | Register-ScriptCopFixer -ErrorAction Stop
+            } | should -Throw
+        }
+    }
+
 
     context 'Self-Testing' {
         it 'Can reload and test itself' {
