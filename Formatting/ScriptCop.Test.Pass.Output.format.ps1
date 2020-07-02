@@ -4,13 +4,13 @@ param()
 $testPassOutput = $_
 
 $writeColor = 
-    if ($_.Passed) {
+    if ($testPassOutput.Passed) {
         if (-not $host.UI.SupportsVirtualTerminal) { "DarkGreen" } else { "Success" } 
     } else {
         if (-not $host.UI.SupportsVirtualTerminal) { "Red" } else { "Error" }
     }
 $testStatus = 
-    if ($_.Passed) {
+    if ($testPassOutput.Passed) {
         "+"
     } else {
         "-"
