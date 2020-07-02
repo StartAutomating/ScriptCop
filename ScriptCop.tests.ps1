@@ -14,7 +14,28 @@ describe ScriptCop {
         }
     }
 
-    context 'Testing' {
+    context 'Dynamic Registration' {
+        it 'Can remove a registered rule' {
+            Unregister-ScriptCopRule -Name Test-DocumentationQuality
+            $(Get-ScriptCopRule |
+                Where-Object Name -EQ Test-DocumentationQuality) | should be $null
+        }
+
+        it 'Can remove a registered fixer' {
+            Unregister-ScriptCopFixer -Name Repair-ModuleManifest
+            $(Get-ScriptCopFixer |
+                Where-Object Name -EQ Repair-ModuleManifest) | should be $null
+
+        }
+
+        it 'Can remove a registered patrol' {
+            Unregister-ScriptCopPatrol -Name Test-Documentation
+            $(Get-ScriptCopPatrol |
+                Where-Object Name -EQ Test-Documentation) | should be $null
+        }
+    }
+
+    context 'Self-Testing' {
         it 'Can reload and test itself' {
             $theModule = Get-Module ScriptCop
             $theModuleRoot = $theModule.Path.Substring(0, $theModule.Path.LastIndexOf([IO.Path]::DirectorySeparatorChar))
