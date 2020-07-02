@@ -1,4 +1,4 @@
-function Unregister-ScriptCopFixer
+﻿function Unregister-ScriptCopFixer
 {
     <#
     .Synopsis
@@ -14,41 +14,43 @@ function Unregister-ScriptCopFixer
         Register-ScriptCopFixer
     .#>
     [CmdletBinding(DefaultParameterSetName='Name')]
+    [OutputType([Nullable])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "", Justification="PSScriptAnalyzer False Positives")]
     param(
     # Unregisters a fixer of a particular name
     [Parameter(ParameterSetName='Name',Mandatory=$true)]
     [string]$Name,
-    
+
     # Unregisters a fixer command
     [Parameter(ParameterSetName='Command',ValueFromPipeline=$true,Mandatory=$true)]
     [Management.Automation.CommandInfo]$Command
     )
-    
+
     begin {
         if (-not $script:ScriptCopFixers) {
             $script:ScriptCopFixers = New-Object Collections.ArrayList
         }
     }
-    
+
     process {
         if ($psCmdlet.ParameterSetName -eq 'Name') {
             #region Remove Fixer by name
             if ($script:ScriptCopFixers) {
-                $script:ScriptCopFixers |                     
-                    Where-Object { 
+                @($script:ScriptCopFixers) |
+                    Where-Object {
                         $_.Name -eq $Name
-                    } |                    
-                    Unregister-ScriptCopFixer                     
+                    } |
+                    Unregister-ScriptCopFixer
             }
-            #endregion            
+            #endregion
         } elseif ($psCmdlet.ParameterSetName -eq 'Command') {
             #region Remove Fixer by commnad
-            $null= $script:ScriptCopFixers.Remove($Command)                    
+            $null= $script:ScriptCopFixers.Remove($Command)
             Write-Debug ($scriptCopFixers | Out-String)
             #endregion
         }
-        
-        
+
+
     }
-} 
+}
 

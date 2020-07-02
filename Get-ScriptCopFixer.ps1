@@ -1,4 +1,4 @@
-function Get-ScriptCopFixer
+﻿function Get-ScriptCopFixer
 {
     <#
     .Synopsis
@@ -10,37 +10,38 @@ function Get-ScriptCopFixer
     .Link
         Repair-Command
     #>
+    [OutputType('ScriptCopRule')]
     param()
-    
+
     begin {
         # Declare the cache if fixers, if it doesn't exist yet.
         if (-not $script:ScriptCopFixers) {
             $script:ScriptCopFixers = New-Object Collections.ArrayList
         }
     }
-    
+
     process {
         #region Convert Fixers from memory represention to psuedo object
-        foreach ($fixer in @($script:ScriptCopFixers)) { 
+        foreach ($fixer in @($script:ScriptCopFixers)) {
             if ($fixer) {
-                # Use Select-Object to turn it into the property bafe we want, and then add a typename 
+                # Use Select-Object to turn it into the property bafe we want, and then add a typename
                 $fixer |
                     Select-Object Name, @{
                         Label='File'
                         Expression={
-                            if ($_.Path){ $_.Path.Replace("$psScriptRoot\", "") } else { $_.ScriptBlock.File.Replace("$psScriptRoot\", "") } 
-                            
+                            if ($_.Path){ $_.Path.Replace("$psScriptRoot\", "") } else { $_.ScriptBlock.File.Replace("$psScriptRoot\", "") }
+
                         }
-                    } | 
+                    } |
                     ForEach-Object {
                         $_.psObject.typenames.clear()
                         $null = $_.psObject.typenames.Add('ScriptcopRule')
                         $_
-                    } 
+                    }
             }
-        } 
+        }
         #endregion
     }
-} 
- 
+}
+
 
