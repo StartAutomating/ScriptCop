@@ -1,5 +1,5 @@
 ﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute("Test-ModuleManifestQuality*", "", Justification="FileList is unimportant")]
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute("Test-ForSlowScript", "", Justification="Performance is not a priority")]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("Test-ForSlowScript", "", Justification="Performance is not a priority for this module")]
 param()
 Set-StrictMode -Off
 
