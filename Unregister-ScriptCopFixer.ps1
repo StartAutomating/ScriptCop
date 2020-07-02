@@ -36,7 +36,7 @@
         if ($psCmdlet.ParameterSetName -eq 'Name') {
             #region Remove Fixer by name
             if ($script:ScriptCopFixers) {
-                $script:ScriptCopFixers |
+                @($script:ScriptCopFixers) |
                     Where-Object {
                         $_.Name -eq $Name
                     } |
