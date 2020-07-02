@@ -12,6 +12,26 @@ describe ScriptCop {
                 Select-Object -ExpandProperty Problem |
                 should -BeLike *StandardVerb-CustomNoun*
         }
+
+        it 'Can exlcude rules' {
+            function foo {
+
+            }
+
+            Get-command foo |
+                Test-Command -Rule Test-CommandNamingConvention -ExcludedRule Test-CommandNamingConvention |
+                should -be $null
+        }
+
+        it 'Can run groups of rules, or Patrols' {
+            function foo {
+            }
+
+            Get-Command foo |
+                Test-Command -Patrol Test-Documentation |
+                    Select-Object -First 1 -ExpandProperty Problem |
+                    should -BeLike *examples*
+        }
     }
 
     context 'Auto-Repair' {
