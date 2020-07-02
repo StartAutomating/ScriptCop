@@ -7,4 +7,11 @@
     Description='A PowerShell Static Analysis Tool to help your scripts follow the rules.'
     Copyright='Copyright 2011'
     Author='James Brundage'
+    PrivateData = @{
+        PSData = @{
+            Tags = 'AuthoringTools', 'StaticAnalysis', 'Testing', 'CodeCoverage', 'CommandCoverage', 'ScriptCop'
+            ProjectURI = 'https://github.com/StartAutomating/ScriptCop'
+            LicenseURI = 'https://github.com/StartAutomating/ScriptCop/blob/master/LICENSE'
+        }
+    }
 }
