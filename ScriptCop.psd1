@@ -9,7 +9,8 @@
     Author='James Brundage'
     PrivateData = @{
         PSData = @{
-            Tags = 'AuthoringTools', 'StaticAnalysis', 'Testing', 'CodeCoverage', 'CommandCoverage', 'ScriptCop'
+            Tags = 'AuthoringTools', 'StaticAnalysis', 'Testing', 'CodeCoverage', 'CommandCoverage', 
+                'ScriptCop', 'lint', 'bestpractice', 'unit_testing', 'tdd', 'bdd', 'Windows', 'Linux','MacOS'
             ProjectURI = 'https://github.com/StartAutomating/ScriptCop'
             LicenseURI = 'https://github.com/StartAutomating/ScriptCop/blob/master/LICENSE'
         }
