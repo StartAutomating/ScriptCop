@@ -1,5 +1,5 @@
 @{
-    ModuleVersion='1.6'
+    ModuleVersion='1.6.1'
     FormatsToProcess='ScriptCop.Format.ps1xml'
     RootModule='ScriptCop.psm1'
     CompanyName='Start-Automating'
