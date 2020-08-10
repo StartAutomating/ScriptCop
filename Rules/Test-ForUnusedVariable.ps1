@@ -97,10 +97,10 @@
             if ('null', 'ofs' -contains $variableName) { continue }
             # So do preference variables
             if ($variableName -like "*Preference") { continue }
-            if ($variableName -like 'global:*' -or $variableName -like 'script:*') { continue }
+            # scoped assignments do as well, since they could be caching or otherwise manipulating state.
+            if ($variableName -like '*:*' -or $variableName -like 'script:*') { continue }
 
-            # Script: assignments do as well, since they could be caching
-            if ($variablename -like "script:*") {continue }
+            if ($ScriptTokenCommand.Parameters[$variableName]) { continue } 
             if (-not $variablesReferencedAt[$variableName]) {
                 $assignedAt = $variablesAssignedAt[$variableName]
                 $assignedAtString = ($assignedAt | Select-Object @{
